@@ -5,7 +5,6 @@ const userModel = require("../models/userSchema");
 
 postRoute.post("/post", async (req, res) => {
   try {
-    // const {}
     const body = req.body;
     const userId = body.userId;
     const createdPost = await postModel.create(body);
@@ -18,6 +17,12 @@ postRoute.post("/post", async (req, res) => {
   } catch (error) {
     res.send(error);
   }
+});
+
+postRoute.get("/posts", async (req, res) => {
+  const posts = await postModel.find().populate("userId");
+  res.send(posts);
+  res.send("mdq");
 });
 
 module.exports = postRoute;

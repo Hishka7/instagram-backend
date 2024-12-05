@@ -14,6 +14,7 @@ userRoute.post("/signUp", async (req, res) => {
     });
 
     res.send(createdUser);
+    console.log(createdUser);
   } catch (error) {
     res.send(error);
   }
