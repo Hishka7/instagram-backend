@@ -4,9 +4,12 @@ const userRoute = require("./routes/userRouter");
 const postRoute = require("./routes/postRouter");
 const commentRoute = require("./routes/commentRouter");
 const likeRoute = require("./routes/likeRouter");
+const cors = require("cors");
+
 const dotenv = require("dotenv");
 const app = express();
 app.use(express.json());
+app.use(cors());
 dotenv.config();
 
 const connect = async () => {
