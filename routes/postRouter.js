@@ -20,9 +20,12 @@ postRoute.post("/post", async (req, res) => {
 });
 
 postRoute.get("/posts", async (req, res) => {
-  const posts = await postModel.find().populate("userId");
-  res.send(posts);
-  res.send("mdq");
+  try {
+    const posts = await postModel.find().populate("userId");
+    res.send(posts);
+  } catch (error) {
+    throw new Error("Failed to get posts");
+  }
 });
 
 module.exports = postRoute;
