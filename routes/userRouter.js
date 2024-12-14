@@ -2,8 +2,10 @@ const Route = require("express");
 const userModel = require("../models/userSchema");
 const userRoute = Route();
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+const authMware = require("../auth-middleware");
 
-userRoute.post("/signUp", async (req, res) => {
+userRoute.post("/signup", async (req, res) => {
   try {
     const { password, email, username } = req.body;
     const hashedPassword = bcrypt.hashSync(password, 10);
@@ -12,13 +14,22 @@ userRoute.post("/signUp", async (req, res) => {
       email,
       username,
     });
-
-    res.send(createdUser);
-    console.log(createdUser);
+    const token = jwt.sign(
+      {
+        userId: createdUser._id,
+        username: createdUser.username,
+      },
+      process.env.JWTSECRET,
+      {
+        expiresIn: "24h",
+      }
+    );
+    res.json({ token });
   } catch (error) {
-    res.send(error);
+    res.send({ error });
   }
 });
+
 userRoute.get("/user/posts", async (req, res) => {
   const userPosts = await userModel.find().populate("posts");
   res.send(userPosts);

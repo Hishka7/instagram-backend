@@ -2,6 +2,7 @@ const Route = require("express");
 const postRoute = Route();
 const postModel = require("../models/postSchema");
 const userModel = require("../models/userSchema");
+const authMware = require("../auth-middleware");
 
 postRoute.post("/post", async (req, res) => {
   try {
@@ -19,7 +20,7 @@ postRoute.post("/post", async (req, res) => {
   }
 });
 
-postRoute.get("/posts", async (req, res) => {
+postRoute.get("/posts", authMware, async (req, res) => {
   try {
     const posts = await postModel.find().populate("userId");
     res.send(posts);
