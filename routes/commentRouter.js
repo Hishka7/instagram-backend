@@ -17,9 +17,10 @@ commentRoute.post("/comments", async (req, res) => {
 
 commentRoute.get("/comments", async (req, res) => {
   try {
-    const comments = await commentModel.find().poplate("postId");
+    const comments = await postModel.find().populate("comments");
     res.send(comments);
   } catch (error) {
+    console.log(error);
     throw new Error("Failed to get posts");
   }
 });
