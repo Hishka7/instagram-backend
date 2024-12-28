@@ -15,4 +15,13 @@ commentRoute.post("/comments", async (req, res) => {
   res.send(createdComment);
 });
 
+commentRoute.get("/comments", async (req, res) => {
+  try {
+    const comments = await commentModel.find().poplate("postId");
+    res.send(comments);
+  } catch (error) {
+    throw new Error("Failed to get posts");
+  }
+});
+
 module.exports = commentRoute;

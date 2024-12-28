@@ -53,4 +53,7 @@ userRoute.post("/user/follow", async (req, res) => {
     throw new Error(error);
   }
 });
+
+// userRoute.get("/login", async (req, res) => {});
+
 module.exports = userRoute;
