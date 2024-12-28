@@ -27,7 +27,10 @@ commentRoute.post("/comments", async (req, res) => {
 //   }
 // });
 commentRoute.get("/post/comments", async (req, res) => {
-  const postComments = await postModel.find(postId).populate("comments");
+  const { postId } = req.body;
+  const postComments = await postModel
+    .findOne({ _id: postId })
+    .populate("comments");
   res.send(postComments);
 });
 
