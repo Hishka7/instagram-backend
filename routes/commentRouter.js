@@ -26,7 +26,7 @@ commentRoute.post("/comments", async (req, res) => {
 //     throw new Error("Failed to get posts");
 //   }
 // });
-commentRoute.get("/post/comments", async (req, res) => {
+commentRoute.post("/post/comments", async (req, res) => {
   const { postId } = req.body;
   const postComments = await postModel
     .findOne({ _id: postId })
