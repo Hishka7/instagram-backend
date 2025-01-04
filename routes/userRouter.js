@@ -54,6 +54,37 @@ userRoute.post("/user/follow", async (req, res) => {
   }
 });
 
+userRoute.get("/user/:userId", async (req, res) => {
+  const { userId } = req.params;
+  const user = await userModel.findById(userId).populate("posts");
+
+  res.send(user);
+});
+
+// userRoute.post("/user/unfollow", async (req, res) => {
+//   const { followingUserId, followedUserId } = req.body;
+//   try {
+//     await userModel.findByIdAndUpdate(followingUserId, {
+//       $pull: {
+//         followers: followedUserId,
+//       },
+//     });
+//     await userModel.findByIdAndUpdate(followedUserId, {
+//       $pull: {
+//         followers: followingUserId,
+//       },
+//     });
+//     res.send("done!");
+//   } catch (error) {
+//     throw new Error(error);
+//   }
+// }
+
+// userRoute.get("/user/followers", async (req, res) => {
+//   const followers = await userModel.find().populate("followers");
+//   res.send(followers);
+// });
+
 // userRoute.get("/login", async (req, res) => {});
 
 module.exports = userRoute;
