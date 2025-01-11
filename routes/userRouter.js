@@ -61,12 +61,21 @@ userRoute.get("/user/:userId", async (req, res) => {
   res.send(user);
 });
 
+// userRoute.post("/user/follow", async (req,res )=>{
+
+// })
+
 userRoute.post("/user/follow", async (req, res) => {
   const { followingUserId, followedUserId } = req.body;
   try {
     await userModel.findByIdAndUpdate(followingUserId, {
       $addToSet: {
         following: followedUserId,
+      },
+    });
+    await userModel.findByIdAndUpdate(followedUserId, {
+      $addToSet: {
+        followers: followingUserId,
       },
     });
     res.send("done!");
@@ -81,6 +90,11 @@ userRoute.post("/user/unfollow", async (req, res) => {
     await userModel.findByIdAndUpdate(followingUserId, {
       $pull: {
         followers: followedUserId,
+      },
+    });
+    await userModel.findByIdAndUpdate(followedUserId, {
+      $pull: {
+        following: followingUserId,
       },
     });
     res.send("done!");
