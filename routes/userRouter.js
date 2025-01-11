@@ -61,6 +61,34 @@ userRoute.get("/user/:userId", async (req, res) => {
   res.send(user);
 });
 
+userRoute.post("/user/follow", async (req, res) => {
+  const { followingUserId, followedUserId } = req.body;
+  try {
+    await userModel.findByIdAndUpdate(followingUserId, {
+      $addToSet: {
+        following: followedUserId,
+      },
+    });
+    res.send("done!");
+  } catch (error) {
+    res.status(500).send({ error: error.message });
+  }
+});
+
+userRoute.post("/user/unfollow", async (req, res) => {
+  const { followingUserId, followedUserId } = req.body;
+  try {
+    await userModel.findByIdAndUpdate(followingUserId, {
+      $pull: {
+        followers: followedUserId,
+      },
+    });
+    res.send("done!");
+  } catch (error) {
+    res.status(500).send({ error: error.message });
+  }
+});
+
 // userRoute.post("/user/unfollow", async (req, res) => {
 //   const { followingUserId, followedUserId } = req.body;
 //   try {
